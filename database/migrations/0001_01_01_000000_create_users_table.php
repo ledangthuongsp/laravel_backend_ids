@@ -18,7 +18,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->foreignId('current_team_id')->nullable();
+            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
+            $table->string('avatarUrl')->nullable(); // Thêm cột avatarUrl
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -45,5 +48,6 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::table('users', function (Blueprint $table) { $table->dropColumn('avatarUrl'); });
     }
 };
