@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id'
     ];
 
     /**
@@ -43,6 +44,15 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => 'integer',
         ];
     }
+    /**
+     * Define the relationship with Role.
+     */
+    public function roleName()
+    {
+        return $this->role ? $this->role->role_type : 'N/A';
+    }
+    
 }
