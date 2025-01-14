@@ -6,12 +6,14 @@ use Illuminate\Support\Facades\Hash;
 class UserRepository implements IUserRepository 
 {
     protected $_model;
-
+    protected RoleRepository $_roleRepository;
+    protected UserRepository $_userRepository;
     // constructor
-    public function __construct() {
-        $this->_model = app()->make(\App\Models\User::class);
+    public function __construct(UserRepository $userRepository, RoleRepository $roleRepository)
+    {
+        $this->_userRepository = $userRepository;
+        $this->_roleRepository = $roleRepository;
     }
-
     // implement interface function
     public function getAll() {
         $users = $this->_model::simplePaginate(Constant::PAGINATE_DEFAULT);
@@ -34,7 +36,8 @@ class UserRepository implements IUserRepository
             'avatar' => $imagePath,
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']) // mã hóa mật khẩu
+            'password' => Hash::make($data['password']), // mã hóa mật khẩu
+            'role' => $data['role'], // Thêm role khi tạo mới
         ]);
 
         return $newUser;
